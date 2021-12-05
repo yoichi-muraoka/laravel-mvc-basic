@@ -11,10 +11,20 @@ class ContactController extends Controller
     {
         return view('contact.index');
     }
+
     public function indexPost(ContactRequest $request)
     {
         $input = $request->validated();
         return redirect()->route('contact.done')
                ->with(['input' => $input]);
+    }
+
+    public function done()
+    {
+        $input = session('input');
+        if(is_null($input)) {
+            return redirect()->route('home.index');
+        }
+        return view('contact.done', ['input' => $input]);
     }
 }
