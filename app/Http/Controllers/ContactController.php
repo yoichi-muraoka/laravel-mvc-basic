@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
-use Illuminate\Http\Request;
+use App\Mail\ContactMail;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -15,6 +16,7 @@ class ContactController extends Controller
     public function indexPost(ContactRequest $request)
     {
         $input = $request->validated();
+        Mail::to($input['email'])->send(new ContactMail($input));
         return redirect()->route('contact.done')
                ->with(['input' => $input]);
     }
